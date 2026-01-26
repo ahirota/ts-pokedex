@@ -2,8 +2,11 @@
   "name": "ts-pokedex",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npx tsc",
+    "start": "node dist/main.js",
+    "dev": "npm run build && npm run start"
   },
   "keywords": [],
   "author": "",
