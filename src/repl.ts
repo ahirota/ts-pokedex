@@ -1,4 +1,6 @@
 import { createInterface } from "readline";
+import { getCommands } from "./registry.js";
+import console from "console";
 
 // Start REPL Process
 export const startREPL = () => {
@@ -18,7 +20,22 @@ export const startREPL = () => {
             return;
         }
 
-        console.log(`Your command was: ${cleaned[0]}`);
+        const commands = getCommands();
+
+        if (cleaned[0] in commands) {
+            try {
+                commands[cleaned[0]].callback(commands)
+            } catch (e) {
+                if (e instanceof Error) {
+                    console.log(`Error: ${e.message}`);
+                } else {
+                    console.log(`Unexpected Error: ${e}`);
+                }
+            }
+        } else {
+            console.log("Unknown command");
+        }
+
         rl.prompt();
     });
 };
