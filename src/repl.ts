@@ -1,36 +1,29 @@
-import { createInterface } from "readline";
-import { getCommands } from "./registry.js";
-import console from "console";
+import type { State } from "./state.js";
 
 // Start REPL Process
-export const startREPL = () => {
-    const rl = createInterface({
-        input: process.stdin,
-        output: process.stdout,
-        prompt: "TS-Pokedex > "
-    });
+export const startREPL = (state: State) => {
+    const { readline, commands } = state;
 
-    rl.prompt();
+    readline.prompt();
 
-    rl.on("line", (line) => {
+    readline.on("line", (line) => {
         const cleaned = cleanInput(line);
         
         if (cleaned.length === 0) {
-            rl.prompt();
+            readline.prompt();
             return;
         }
 
         const command = cleaned[0];
-        const commands = getCommands();
 
         if (!(command in commands)) {
             console.log("Unknown command");
-            rl.prompt();
+            readline.prompt();
             return;
         }
 
         try {
-            commands[command].callback(commands)
+            commands[command].callback(state);
         } catch (e) {
             if (e instanceof Error) {
                 console.log(`Error: ${e.message}`);
@@ -39,7 +32,7 @@ export const startREPL = () => {
             }
         }
 
-        rl.prompt();
+        readline.prompt();
     });
 };
 

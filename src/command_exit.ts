@@ -1,7 +1,7 @@
-import type { CLICommand } from "./registry.js";
+import type { State } from "./state.js";
 
-// Ignore input
-export const commandExit = (commands: Record<string, CLICommand>) => {
+export const commandExit = (state: State) => {
     console.log("Closing the Pokedex... Goodbye!");
+    state.readline.close();
     process.exit(0);
 };
