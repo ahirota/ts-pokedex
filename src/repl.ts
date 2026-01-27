@@ -20,20 +20,23 @@ export const startREPL = () => {
             return;
         }
 
+        const command = cleaned[0];
         const commands = getCommands();
 
-        if (cleaned[0] in commands) {
-            try {
-                commands[cleaned[0]].callback(commands)
-            } catch (e) {
-                if (e instanceof Error) {
-                    console.log(`Error: ${e.message}`);
-                } else {
-                    console.log(`Unexpected Error: ${e}`);
-                }
-            }
-        } else {
+        if (!(command in commands)) {
             console.log("Unknown command");
+            rl.prompt();
+            return;
+        }
+
+        try {
+            commands[command].callback(commands)
+        } catch (e) {
+            if (e instanceof Error) {
+                console.log(`Error: ${e.message}`);
+            } else {
+                console.log(`Unexpected Error: ${e}`);
+            }
         }
 
         rl.prompt();
