@@ -1,10 +1,25 @@
+import { Cache } from "./pokecache.js";
+
 export class PokeAPI {
     private static readonly baseURL = "https://pokeapi.co/api/v2";
+    private apiCache: Cache;
 
-    constructor() {}
+    constructor(cacheInterval: number) {
+        this.apiCache = new Cache(cacheInterval)
+    }
+
+    closeCache() {
+        this.apiCache.stopReapLoop();
+    }
 
     async fetchLocations(pageURL?: string): Promise<ShallowLocations> {
         if (!pageURL) { pageURL = PokeAPI.baseURL + "/location-area/"; }
+
+        const cached = this.apiCache.get<ShallowLocations>(pageURL);
+        if (cached) {
+            console.log('Retrieving Cached Data:'); 
+            return cached; 
+        }
 
         try {
             const response = await fetch(pageURL, {method: "GET"});
@@ -13,7 +28,10 @@ export class PokeAPI {
                 throw new Error(`Error accessing API: ${response.status} ${response.statusText}`);
             }
 
-            return await response.json();
+            const json = await response.json();
+            this.apiCache.add<ShallowLocations>(pageURL, json);
+
+            return json;
         } catch (e) {
             throw new Error(`Error fetching location areas: ${(e as Error).message}`);
         }
@@ -22,6 +40,12 @@ export class PokeAPI {
     async fetchLocation(locationName: string): Promise<Location> {
         const locationURL = PokeAPI.baseURL + `/location-area/${locationName}/`;
 
+        const cached = this.apiCache.get<Location>(locationURL);
+        if (cached) {
+            console.log('Retrieving Cached Data:'); 
+            return cached; 
+        }
+
         try {
             const response = await fetch(locationURL, {method: "GET"});
 
@@ -29,7 +53,10 @@ export class PokeAPI {
                 throw new Error(`Error accessing API: ${response.status} ${response.statusText}`);
             }
 
-            return await response.json();
+            const json = await response.json();
+            this.apiCache.add<Location>(locationURL, json);
+
+            return json;
         } catch (e) {
             throw new Error(`Error fetching location area [${locationName}]: ${(e as Error).message}`);
         }
