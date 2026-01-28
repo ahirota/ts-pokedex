@@ -14,5 +14,6 @@ export const commandCatch = async (state: State, name: string) => {
     }
 
     console.log(`${name} was caught!`);
+    console.log("You may now inspect it with the inspect command.")
     state.pokedex[name] = pokemonJson;
 };

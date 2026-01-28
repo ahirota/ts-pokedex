@@ -20,3 +20,15 @@ export const commandInspect = async (state: State, name: string) => {
         console.log(`  - ${type.type.name}`);
     }
 };
+
+export const commandPokedex = async (state: State) => {
+    if (Object.keys(state.pokedex).length === 0) {
+        console.log("Your Pokedex is empty.");
+        return;
+    }
+
+    console.log("Your Pokedex:");
+    for (const pokemon in state.pokedex) {
+        console.log(` - ${pokemon}`);
+    }
+};

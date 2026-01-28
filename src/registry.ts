@@ -2,7 +2,7 @@ import { commandExit } from "./command_exit.js";
 import { commandHelp } from "./command_help.js";
 import { commandMap, commandMapBack, commandExplore } from "./command_map.js";
 import { commandCatch } from "./command_catch.js";
-import { commandInspect } from "./command_inspect.js";
+import { commandInspect, commandPokedex } from "./command_inspect.js";
 
 import type { CLICommand } from "./state.js";
 
@@ -43,6 +43,11 @@ export const getCommands = (): Record<string, CLICommand> => {
         name: "inspect",
         description: "Requires a Pokemon name. Displays Pokemon details if Pokemon exists in Pokedex. Otherwise alerts user they need to catch the Pokemon.",
         callback: commandInspect,
+    },
+    pokedex: {
+        name: "pokedex",
+        description: "Displays list of Pokemon entries saved in your Pokedex. If no entries, alerts user their Pokedex is empty.",
+        callback: commandPokedex,
     },
   };
 }
