@@ -6,7 +6,7 @@ export const startREPL = (state: State) => {
 
     readline.prompt();
 
-    readline.on("line", (line) => {
+    readline.on("line", async (line) => {
         const cleaned = cleanInput(line);
         
         if (cleaned.length === 0) {
@@ -23,13 +23,9 @@ export const startREPL = (state: State) => {
         }
 
         try {
-            commands[command].callback(state);
+            await commands[command].callback(state);
         } catch (e) {
-            if (e instanceof Error) {
-                console.log(`Error: ${e.message}`);
-            } else {
-                console.log(`Unexpected Error: ${e}`);
-            }
+            console.log(`An Error Occurred:\n--------------\n${e}`);
         }
 
         readline.prompt();
