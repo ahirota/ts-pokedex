@@ -15,6 +15,7 @@ export const startREPL = (state: State) => {
         }
 
         const command = cleaned[0];
+        const args = cleaned.slice(1);
 
         if (!(command in commands)) {
             console.log("Unknown command");
@@ -23,7 +24,7 @@ export const startREPL = (state: State) => {
         }
 
         try {
-            await commands[command].callback(state);
+            await commands[command].callback(state, ...args);
         } catch (e) {
             console.log(`An Error Occurred:\n--------------\n${e}`);
         }

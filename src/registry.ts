@@ -1,6 +1,6 @@
 import { commandExit } from "./command_exit.js";
 import { commandHelp } from "./command_help.js";
-import { commandMap, commandMapBack } from "./command_map.js";
+import { commandMap, commandMapBack, commandExplore } from "./command_map.js";
 
 import type { CLICommand } from "./state.js";
 
@@ -26,6 +26,11 @@ export const getCommands = (): Record<string, CLICommand> => {
         name: "mapb",
         description: "Displays the previous paginated result of 20 Locations in the Pokemon world, if a previous page exists. Otherwise, alerts user they are on the first page.",
         callback: commandMapBack,
+    },
+    explore: {
+        name: "explore",
+        description: "Displays the previous paginated result of 20 Locations in the Pokemon world, if a previous page exists. Otherwise, alerts user they are on the first page.",
+        callback: commandExplore,
     },
   };
 }

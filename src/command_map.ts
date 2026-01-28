@@ -34,3 +34,14 @@ export const commandMapBack = async (state: State) => {
         console.log(locationArea.name);
     }
 };
+
+export const commandExplore = async (state: State, name: string) => {
+    const api = state.pokeapi;
+    const locationAreaJson = await api.fetchLocation(name);
+
+    console.log(`Exploring ${locationAreaJson.name}...`);
+    console.log("Found Pokemon:");
+    for (const pokemonEncounter of locationAreaJson.pokemon_encounters) {
+        console.log(` - ${pokemonEncounter.pokemon.name}`);
+    }
+};
